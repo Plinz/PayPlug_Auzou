@@ -20,6 +20,7 @@ def parseInputFile(csvInput, csvOutput):
             while (i < len(reader) and reader[i][0]):
                 if len(reader[i]) > 11 :
                     date = removeChars(reader[i][1].split(' ')[0], ' "')
+                    date = date[8:] + date[5:7] + date[2:4]
                     ref = removeChars(reader[i][0], ' "')
                     val = removeChars(reader[i][5], ' -+"')
                     type = removeChars(reader[i][3], ' "')
