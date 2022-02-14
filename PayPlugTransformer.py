@@ -40,7 +40,7 @@ def parseInputFile(csvInput, csvOutput):
                     elif ('Facture' in type):
                         lib = removeChars(reader[i][4], '"')
                         writer.writerow(['149', date, '51710000', '', ref, lib, '', val])
-                        writer.writerow(['149', date, '41190000', '401387', ref, lib, val, ''])
+                        writer.writerow(['149', date, '40110000', '401387', ref, lib, val, ''])
                     else:
                         eventError = popupError("Le Type (" + type + ") de la ligne " + str(i+1) + " n'a pas été reconnu.")
                         if eventError != "Continuer" :
