@@ -17,3 +17,5 @@ https://github.com/Plinz/PayPlug_Auzou
 
 Vous pouvez me contacter à l'adresse e-mail :
 antoine.duquennoy@protonmail.com
+
+Commande pour générer l'exécutable : $ pyinstaller -F -n PayPlugTransformer_AUZOU_EDITIONS -i favicon.ico --noconsole PayPlugTransformer.py

@@ -33,8 +33,14 @@ def parseInputFile(csvInput, csvOutput):
                         writer.writerow(['149', date, '41190000', '4000', ref, lib, '', val])
                     elif ('Remboursement' in type):
                         listLib = removeChars(reader[i][10], '"').split(',')
+                        codePaiement = reader[i][4].strip().split('#')[-1]
                         client = listLib[0].split(':')[1].split('}')[0].strip()
-                        lib = 'Remboursement ,Client:' + client.zfill(5)
+                        lib = 'Remboursement #' + codePaiement + ',Client:' + client.zfill(5)
+                        writer.writerow(['149', date, '51710000', '', ref, lib, '', val])
+                        writer.writerow(['149', date, '41190000', '4000', ref, lib, val, ''])
+                    elif ('Opposition' in type):
+                        codePaiement = reader[i][4].strip().split('#')[-1]
+                        lib = 'Opposition #' + codePaiement
                         writer.writerow(['149', date, '51710000', '', ref, lib, '', val])
                         writer.writerow(['149', date, '41190000', '4000', ref, lib, val, ''])
                     elif ('Facture' in type):
