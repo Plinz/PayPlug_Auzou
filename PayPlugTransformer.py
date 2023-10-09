@@ -3,7 +3,7 @@ import csv, os
 
 def removeChars(text, chars):
     return ''.join(c for c in text if c not in chars)
-    
+
 def popupError(errorText):
     error = sg.Window(windowName, [[sg.Text(errorText)], [sg.Column([[sg.Button("Continuer"), sg.Button("Arrêter")]], element_justification='c', expand_x=True)]], modal = True)
     eventError, valuesError = error.read()
@@ -18,35 +18,35 @@ def parseInputFile(csvInput, csvOutput):
             reader = list(csv.reader(csvfileinput, delimiter=','))
             i = 1
             while (i < len(reader) and reader[i][0]):
-                if len(reader[i]) > 11 :
+                if len(reader[i]) > 15 :
                     date = removeChars(reader[i][1].split(' ')[0], ' "')
                     date = date[8:] + date[5:7] + date[2:4]
                     ref = removeChars(reader[i][0], ' "')
-                    val = removeChars(reader[i][5], ' -+"')
-                    type = removeChars(reader[i][3], ' "')
+                    val = removeChars(reader[i][6], ' -+"')
+                    type = removeChars(reader[i][4], ' "')
                     if ('Paiement' in type):
-                        listLib = removeChars(reader[i][10], '"').split(',')
+                        listLib = removeChars(reader[i][14], '"').split(',')
                         order = listLib[3].split(':')[1].split('}')[0].strip()
                         client = listLib[0].split(':')[1].split('}')[0].strip()
                         lib = 'FA' + str(int(order)-10).zfill(6) + ',Client:' + client.zfill(5) + ',Order:' + order.zfill(6)
                         writer.writerow(['149', date, '51710000', '', ref, lib, val, ''])
                         writer.writerow(['149', date, '41190000', '4000', ref, lib, '', val])
                     elif ('Remboursement' in type):
-                        listLib = removeChars(reader[i][10], '"').strip().split(',')
-                        codePaiement = reader[i][4].strip().split('#')[-1]
+                        listLib = removeChars(reader[i][14], '"').strip().split(',')
+                        codePaiement = reader[i][5].strip().split('#')[-1]
                         client = ''
                         if listLib and listLib[0]:
-                            client = ',Client:' + listLib[0].split(':')[1].split('}')[0].strip().zfill(5)                        
+                            client = ',Client:' + listLib[0].split(':')[1].split('}')[0].strip().zfill(5)
                         lib = 'Remboursement #' + codePaiement + client
                         writer.writerow(['149', date, '51710000', '', ref, lib, '', val])
                         writer.writerow(['149', date, '41190000', '4000', ref, lib, val, ''])
                     elif ('Opposition' in type):
-                        codePaiement = reader[i][4].strip().split('#')[-1]
+                        codePaiement = reader[i][5].strip().split('#')[-1]
                         lib = 'Opposition #' + codePaiement
                         writer.writerow(['149', date, '51710000', '', ref, lib, '', val])
                         writer.writerow(['149', date, '41190000', '4000', ref, lib, val, ''])
                     elif ('Facture' in type):
-                        lib = removeChars(reader[i][4], '"')
+                        lib = removeChars(reader[i][5], '"')
                         writer.writerow(['149', date, '51710000', '', ref, lib, '', val])
                         writer.writerow(['149', date, '40110000', '401387', ref, lib, val, ''])
                     else:
@@ -59,7 +59,7 @@ def parseInputFile(csvInput, csvOutput):
                         return False
                 i += 1
     return True
-    
+
 def runScript(values):
     csvInput = values['input']
     csvOutput = values['output']
